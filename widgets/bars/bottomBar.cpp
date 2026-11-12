@@ -1,0 +1,27 @@
+#include <QWidget>
+#include <QVBoxLayout>
+#include <QLabel>
+
+#include "colors/colors.h"
+#include "widgets/bars/bottomBar.h"
+
+bottomBar::bottomBar() : QWidget() {
+  auto *topLayout = new QVBoxLayout(this);
+  topLayout->setContentsMargins(0,0,0,0);
+
+  auto *mainWidget = new QWidget();
+  mainWidget->setStyleSheet(
+    QString::fromStdString(
+      std::format(R"(
+        background-color: {};
+      )",
+      colors::color1
+    )
+    )
+  );
+
+  auto *mainLayout = new QVBoxLayout(mainWidget);
+  mainLayout->setContentsMargins(0,0,0,0);
+
+  topLayout->addWidget(mainWidget);
+}
