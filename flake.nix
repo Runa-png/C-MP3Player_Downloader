@@ -18,7 +18,7 @@
 
         nativeBuildInputs = [
           pkgs.pkg-config
-          pkgs.wrapQtAppsHook
+          pkgs.qt6.wrapQtAppsHook
         ];
 
         buildInputs = [
