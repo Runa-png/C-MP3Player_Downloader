@@ -1,18 +1,18 @@
-CXX = g++
-CXXFLAGS = -std=c++20 -Wall -Wextra -O2 -I.
-QTFLAGS = $(shell pkg-config --cflags Qt6Widgets)
-QTLIBS = $(shell pkg-config --libs Qt6Widgets)
+BUILD_DIR = build
+TARGET = $(BUILD_DIR)/app
+JOBS = $(shell nproc)
 
-TARGET = app
-SOURCES = $(shell find . -name '*.cpp')
+.PHONY: all build clean run
 
-all: $(TARGET)
+all: build
 
-$(TARGET): $(SOURCES)
-	$(CXX) $(CXXFLAGS) $(QTFLAGS) $(SOURCES) -o $(TARGET) $(QTLIBS)
+build:
+	rm -rf ./$(BUILD_DIR)
+	cmake -S . -B $(BUILD_DIR)
+	cmake --build $(BUILD_DIR) -j$(JOBS)
 
 clean:
-	rm -f $(TARGET)
+	rm -rf ./$(BUILD_DIR)
 
-run: $(TARGET)
-	QT_LOGGING_RULES="qt.qpa.wayland.textinput=false" ./$(TARGET)
+run: build
+	./$(TARGET)

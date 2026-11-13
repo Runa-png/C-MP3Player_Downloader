@@ -16,6 +16,11 @@
         pkgs.qt6.qtwayland
       ];
 
+      pythonEnv = pkgs.python3.withPackages (ps: with ps; [
+        yt-dlp
+        fuzzywuzzy
+      ]);
+
     in {
       devShells.${system}.default = pkgs.mkShell {
         packages = with pkgs; [
@@ -29,6 +34,9 @@
           # Qt
           qt
           qtcreator
+
+          # Python 
+          pythonEnv
 
           # Open GL
           libGL

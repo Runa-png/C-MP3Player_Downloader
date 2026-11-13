@@ -9,6 +9,10 @@
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
 
+      pythonEnv = pkgs.python3.withPackages (ps: with ps; [
+        yt-dlp
+      ]);
+
     in {
       packages.${system}.default = pkgs.stdenv.mkDerivation {
         pname = "mp3player";
@@ -28,6 +32,10 @@
           pkgs.libglvnd
         ];
 
+        qtWrapperArgs = [
+          "--prefix PATH : ${pythonEnv}/bin"
+        ];
+
         buildPhase = ''
           g++ -std=c++20 -O2 -Wall -Wextra -I. \
             $(find . -name '*.cpp') \
@@ -37,7 +45,10 @@
 
         installPhase = ''
           mkdir -p $out/bin
+          mkdir -p $out/share/mp3player/scripts
+
           cp mp3player $out/bin/mp3player
+          cp -r scripts/*.py $out/share/mp3player/scripts/
         '';
       };
 
